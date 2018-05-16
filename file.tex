@@ -1,0 +1,147 @@
+\documentclass[border=10pt]{standalone}
+\usepackage{forest}
+
+\definecolor{fblue}{RGB}{92,144,192}
+\definecolor{fgreen}{RGB}{34,162,70}
+\definecolor{fwhite}{RGB}{255,255,255}
+\definecolor{folderborder}{RGB}{110,144,169}
+
+\def\Size{4pt}
+\def\FileSize{6pt}
+
+\newcommand\myfolder[2][fblue]{%
+\begin{tikzpicture}[overlay]
+\begin{scope}
+\filldraw[draw=folderborder,top color=#1!50,bottom color=#1]
+  (-1.05*\Size,0.2\Size+5pt) rectangle ++(.75*\Size,-0.2\Size-5pt);  
+\filldraw[draw=folderborder,top color=#1!50,bottom color=#1]
+   (-1.15*\Size,-\Size) rectangle (1.15*\Size,\Size);
+\end{scope}  
+\end{tikzpicture}%
+\makebox{\raisebox{-3pt}{{\ttfamily\ /#2}}}%
+}
+
+\newcommand\myfile[2][fwhite]{%
+\begin{tikzpicture}[overlay]
+\begin{scope}
+\filldraw[draw=folderborder,top color=#1!50,bottom color=#1]
+   (-0.75*\FileSize,-\FileSize) rectangle (0.75*\FileSize,\FileSize);
+\draw[white, fill=white] ($(0.75*\FileSize,\FileSize)+(-3pt,0)$) --++ (3pt,0) --++ (0,-3pt) -- cycle;
+\fill[black] ($(0.75*\FileSize,\FileSize)+(0,-3pt)$) --++ (0,-0.5pt) --++ (-3.5pt,0) --++ (0,3.5pt) --++ (0.5pt,0) -- cycle;
+\end{scope}  
+\end{tikzpicture}%
+\makebox{\raisebox{-3pt}{{\ttfamily\ /#2}}}%
+}
+
+\begin{document}
+
+\begin{forest}
+  for tree={
+    font=\ttfamily,
+    grow'=0,
+    child anchor=west,
+    parent anchor=south,
+    anchor=west,
+    calign=first,
+    inner xsep=7pt,
+    edge path={
+      \noexpand\path [draw, \forestoption{edge}]
+      (!u.south west) +(7.5pt,0) |- (.child anchor)\forestoption{edge label};
+    },
+    before typesetting nodes={
+      if n=1
+        {insert before={[,phantom]}}
+        {}
+    },
+    fit=band,
+    before computing xy={l=15pt},
+  }
+[\myfolder{}
+  [{\myfolder[fblue]{Application}}
+    [{\myfolder[fgreen]{AppComm}}
+      [{\myfile[fwhite]{AppComm.c}}]
+    ]
+    [{\myfolder[fgreen]{AppComp}}
+      [{\myfolder[fgreen]{Bcd}}
+        [{\myfile[fwhite]{Bcd.c}}]
+	[{\myfile[fwhite]{BcdPhylo.c}}]
+	[{\myfile[fwhite]{BcdStat.c}}]
+      ]
+      [{\myfolder[fgreen]{Cp}}
+        [{\myfile[fwhite]{Cp.c}}]
+	    [{\myfile[fwhite]{CpPhylo.c}}]
+	    [{\myfile[fwhite]{CpStat.c}}]
+      ]
+      [{\myfolder[fgreen]{Cp2}}
+        [{\myfile[fwhite]{Cp2.c}}]
+	[{\myfile[fwhite]{Cp2Phylo.c}}]
+	[{\myfile[fwhite]{Cp2Stat.c}}]
+      ]
+      [{\myfolder[fgreen]{Cv}}
+        [{\myfile[fwhite]{Cp.c}}]
+	[{\myfile[fwhite]{CvPhylo.c}}]
+	[{\myfile[fwhite]{CvStat.c}}]
+      ]
+      [{\myfolder[fgreen]{Vf}}
+        [{\myfile[fwhite]{Vf.c}}]
+	[{\myfile[fwhite]{VfPhylo.c}}]
+	[{\myfile[fwhite]{VfStat.c}}]
+      ]
+    ]
+	 [{\myfolder[fgreen]{AppFun}}
+	  [{\myfile[fwhite]{AppFun.c}}]	
+	  [{\myfile[fwhite]{AppInfo.c}}]
+      [{\myfile[fwhite]{AppNv.c}}]		  
+       [{\myfolder[fgreen]{BcdCtrl}}
+         [{\myfile[fwhite]{BcdCtrlloControl.c}}]
+	     [{\myfile[fwhite]{BcdCtrlNv.c}}]	
+       ]
+	   [{\myfolder[fgreen]{Cp2Ctrl}}
+         [{\myfile[fwhite]{Cp2Ctrl.c}}]
+	     [{\myfile[fwhite]{Cp2CtrlNv.c}}]	
+       ]
+	    [{\myfolder[fgreen]{CpCtrl}}
+          [{\myfile[fwhite]{CpCtrl.c}}]
+		  [{\myfile[fwhite]{CpCtrlloControl.c}}]
+		  [{\myfile[fwhite]{CpCtrlMode.c}}]		 
+	      [{\myfile[fwhite]{CpCtrlNv.c}}]	
+        ]
+		 [{\myfolder[fgreen]{CvCtrl}}
+           [{\myfile[fwhite]{CvCtrl.c}}]
+		   [{\myfile[fwhite]{CvCtrlloControl.c}}]
+		   [{\myfile[fwhite]{CvCtrlMode.c}}]		
+	       [{\myfile[fwhite]{CvCtrlNv.c}}]	
+         ]
+		 [{\myfolder[fgreen]{OpCtrl}}
+           [{\myfile[fwhite]{OpCtrl.c}}]
+		 ]
+		 [{\myfolder[fgreen]{VfCtrl}}
+           [{\myfile[fwhite]{VfCtrl.c}}]
+		   [{\myfile[fwhite]{VfCtrlloControl.c}}]
+		   [{\myfile[fwhite]{VfCtrlNv.c}}]	
+         ]
+	  ]
+	[{\myfolder[fgreen]{AppIdent}}
+       [{\myfile[fwhite]{AppIdentification.c}}]
+	]
+	[{\myfolder[fgreen]{HeaterTimer}}
+      [{\myfile[fwhite]{HratingTimer.c}}]
+	]
+	 [{\myfolder[fgreen]{WBusInterface}}
+	  [{\myfolder[fgreen]{WBusApplication}}
+         [{\myfile[fwhite]{AppWBusAppActivationControl.c}}]
+	     [{\myfile[fwhite]{AppWBusAppParam.c}}]	
+       ]
+	  [{\myfile[fwhite]{ApplicationGateway.c}}]	
+	  [{\myfile[fwhite]{AppWBusIf.c}}]
+      [{\myfile[fwhite]{AppWBusIfReq.c}}]  
+      [{\myfile[fwhite]{AppWBusIfResp.c}}] 	
+      [{\myfile[fwhite]{AppWBusIfSendReq.c}}] 	  
+	 ]
+    [{\myfile[fwhite]{ApplAssert.c}}]
+    [{\myfile[fwhite]{ApplLog.c}}]
+    [{\myfile[fwhite]{SWC\_CustomerApplication.c}}]
+  ]
+]
+\end{forest}
+\end{document}
